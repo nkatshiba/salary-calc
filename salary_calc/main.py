@@ -119,13 +119,15 @@ else:
     table_data.append([f"{today[:2]}/{today[2:]}", formatted_working_hours, f"{salary:.2f} SEK"])
     grand_total_salary += salary
 
+# Add an empty row before the grand total salary row
+    # table_data.append(["", "", ""])
+
 # Add the grand total salary row to the table_data list
-    table_data.append(["", "", ""])
     table_data.append(["", "Grand total salary:", f"{grand_total_salary:.2f} SEK"])
 
 # Save the updated table_data to salaries.txt
     with open("salaries.txt", "w") as f:
-        f.write(tabulate(table_data, headers=headers, tablefmt="grid"))
+        f.write(tabulate(table_data, headers=headers, tablefmt="pipe"))
 
 # Display the table in the terminal using the tabulate library
-    print(tabulate(table_data, headers=headers, tablefmt="grid"))
+    print(tabulate(table_data, headers=headers, tablefmt="pipe"))
