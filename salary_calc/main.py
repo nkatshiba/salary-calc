@@ -81,8 +81,11 @@ else:
             salary += duration.seconds / 3600 * s * slot["multiplier"]
             time_slots_salary.append(f"{slot['start']}-{working_hours[5:]}: {duration.seconds / 3600 * s * slot['multiplier']:.2f} SEK")
 
-
 # ... (all the code above remains unchanged)
+
+# Initialize table_data and headers
+    table_data = []
+    headers = ["Date", "Working hours", "Salary"]
 
 # Display salary and time slots salary
     print(f"Your salary for {today[:2]}/{today[2:]} is: {salary:.2f} SEK")
@@ -91,51 +94,38 @@ else:
         print(slot_salary)
 
 # Calculate grand total salary
-    salary_data_lines = []  # Store the salary data lines
-
-# Create the file "salaries.txt" if it doesn't exist
-    if not os.path.exists("salaries.txt"):
-        with open("salaries.txt", "w") as f:
-            f.write("| Date  | Working hours | Salary       |\n")
-            f.write("|-------|---------------|--------------|\n")
-
     grand_total_salary = 0  # Initialize grand_total_salary to 0
 
+# Read the content of salaries.txt
     with open("salaries.txt", "r") as f:
         lines = f.readlines()
-        for line in lines:
-            if "|" in line and "Date" not in line and "Grand total salary" not in line and "-------" not in line:
-                salary_data_lines.append(line)
-                try:
-                    salary_value = line.split("|")[2].strip()
-                    grand_total_salary += float(salary_value.split(" ")[0])
-                except (ValueError, IndexError):
-                    # Skip the line if it cannot be converted to a float or has an incorrect index
-                    pass
-            elif "Grand total salary" in line:
-                grand_total_salary = float(line.split(":")[1].strip().split(" ")[0])
 
-    grand_total_salary += salary  # Add the current day's salary to the grand total
+# Update the table_data list and grand_total_salary
+    for line in lines:
+        if "|" in line and "Date" not in line and "Grand total salary" not in line and "-------" not in line:
+            date_value = line.split("|")[1].strip()
+            working_hours_value = line.split("|")[2].strip()
+            salary_value = line.split("|")[3].strip()
+            table_data.append([date_value, working_hours_value, salary_value])
+            try:
+                grand_total_salary += float(salary_value.split(" ")[0])
+            except (ValueError, IndexError):
+                # Skip the line if it cannot be converted to a float or has an incorrect index
+                pass
 
-# Save salary to file
+# Add the current day's salary to table_data and grand_total_salary
+    start_time, end_time = working_hours.split("-")
+    formatted_working_hours = f"{start_time[:2]}:{start_time[2:]}-{end_time[:2]}:{end_time[2:]}"
+    table_data.append([f"{today[:2]}/{today[2:]}", formatted_working_hours, f"{salary:.2f} SEK"])
+    grand_total_salary += salary
+
+# Add the grand total salary row to the table_data list
+    table_data.append(["", "", ""])
+    table_data.append(["", "Grand total salary:", f"{grand_total_salary:.2f} SEK"])
+
+# Save the updated table_data to salaries.txt
     with open("salaries.txt", "w") as f:
-        # Write the header and separators
-        f.write("| Date  | Working hours | Salary       |\n")
-        f.write("|-------|---------------|--------------|\n")
-
-        # Write the previous salary data lines (excluding the previous grand total salary line)
-        for line in salary_data_lines:
-            f.write(line)
-
-        # Write the new salary entry
-        f.write(f"| {today[:2]}/{today[2:]} | {working_hours:13} | {salary:10.2f} SEK |\n")
-
-        # Write the grand total salary
-        f.write("|-------|---------------|--------------|\n")
-        f.write(f"| Grand total salary: {grand_total_salary:10.2f} SEK |\n")
+        f.write(tabulate(table_data, headers=headers, tablefmt="grid"))
 
 # Display the table in the terminal using the tabulate library
-    with open("salaries.txt", "r") as f:
-        table_data = [line.split("|")[1:-1] for line in f.readlines() if "Date" not in line and "-------" not in line]
-        headers = ["Date", "Working hours", "Salary"]
-        print(tabulate(table_data, headers=headers, tablefmt="grid"))
+    print(tabulate(table_data, headers=headers, tablefmt="grid"))
