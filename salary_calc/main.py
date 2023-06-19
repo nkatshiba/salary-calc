@@ -1,5 +1,6 @@
 import datetime
 import os
+from tabulate import tabulate
 
 # Base salary
 s = float(152.5)
@@ -80,6 +81,7 @@ else:
             salary += duration.seconds / 3600 * s * slot["multiplier"]
             time_slots_salary.append(f"{slot['start']}-{working_hours[5:]}: {duration.seconds / 3600 * s * slot['multiplier']:.2f} SEK")
 
+
 # ... (all the code above remains unchanged)
 
 # Display salary and time slots salary
@@ -94,8 +96,8 @@ else:
 # Create the file "salaries.txt" if it doesn't exist
     if not os.path.exists("salaries.txt"):
         with open("salaries.txt", "w") as f:
-            f.write("| Date  | Working hours  | Salary      |\n")
-            f.write("|-------|----------------|-------------|\n")
+            f.write("| Date  | Working hours | Salary       |\n")
+            f.write("|-------|---------------|--------------|\n")
 
     grand_total_salary = 0  # Initialize grand_total_salary to 0
 
@@ -118,16 +120,22 @@ else:
 # Save salary to file
     with open("salaries.txt", "w") as f:
         # Write the header and separators
-        f.write("| Date  | Working hours  | Salary      |\n")
-        f.write("|-------|----------------|-------------|\n")
+        f.write("| Date  | Working hours | Salary       |\n")
+        f.write("|-------|---------------|--------------|\n")
 
         # Write the previous salary data lines (excluding the previous grand total salary line)
         for line in salary_data_lines:
             f.write(line)
 
         # Write the new salary entry
-        f.write(f"| {today[:2]}/{today[2:]} | {working_hours} | {salary:.2f} SEK |\n")
+        f.write(f"| {today[:2]}/{today[2:]} | {working_hours:13} | {salary:10.2f} SEK |\n")
 
         # Write the grand total salary
-        f.write("|-------|----------------|-------------|\n")
-        f.write(f"| Grand total salary: {grand_total_salary:.2f} SEK |\n")
+        f.write("|-------|---------------|--------------|\n")
+        f.write(f"| Grand total salary: {grand_total_salary:10.2f} SEK |\n")
+
+# Display the table in the terminal using the tabulate library
+    with open("salaries.txt", "r") as f:
+        table_data = [line.split("|")[1:-1] for line in f.readlines() if "Date" not in line and "-------" not in line]
+        headers = ["Date", "Working hours", "Salary"]
+        print(tabulate(table_data, headers=headers, tablefmt="grid"))
