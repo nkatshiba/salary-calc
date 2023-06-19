@@ -1,6 +1,0 @@
-now it works. But could you help me change to code with the following changes: 
-
-1. Change just the input dateformat to 1506 for 15th of june and keep 15/06 when displaying the dates.
-2. Change so that i should enter time like 1700-2345 as opposed to 17:00-23:45.
-3. Display the total accumulated salary after every run, i.e. print the salary.txt file or extract the content etc.
-4. Insert a newline between the total amount line and salary entries.
