@@ -1,3 +1,4 @@
 # Salary Calc, developed using `Python`.
-It automates the process of calculating total salary based on base pay and overtime hours.
-This allows for precise and consistent calculations of take-home pay, including any overtime premiums or other relevant compensation.
+Salary Calc is a calculator developed using Python that simplifies the process of calculating total salary
+ based on base pay and overtime hours. The tool allows for straightforward and consistent calculations of take
+-home pay, including any overtime premiums or other relevant compensation.
