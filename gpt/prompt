@@ -1,7 +1,7 @@
-Hi, I would like you to write code for my python CLI / TUI application.
+Hi, I would like you to write code for my python CLI application.
 It's an app that automatizes the calculation of my salary.
 I want it to do the following:
-When I start it, it should prompt me to either input the working hours of the day on the format displayed in the parentheses (10:05-19:00), or the option to skip because i haven't workes that day.
+When I start it, it should prompt me to either input the working hours of the day on the format displayed in the parentheses (1005-1900), or the option to skip because i haven't workes that day.
 Thereafter, if i worked that day, it should calculate the days salary based on both the previous hours from the aforementioned input, as well as the following overtime scheme in which the variable "s" is the base salary:
 
 ```
@@ -19,10 +19,10 @@ Sunday:
 ```
 
 Then I want to have the total salary displayed with a line with every time slots total salary of the day.
-Afterwards, I want the days salary stored in a text file in combination with todays date as well as the salary of the day.
-In this file i want the grand total salary from all days calculated and displayed on the final line in the file.
+Afterwards, I want the days salary nicely formated and stored into a text file in combination with todays date as well as the salary of the day.
+In this file i want the grand total salary from all days calculated and displayed two empty lines below the last entry in the file.
 
-Additional info is that the currency is swedish crowns (SEK) and the time is on format 00:00-24:00 a.k.a standard time in sweden.
-The dateformat shold be 16/06, i.e. 16th of June.
+Additional info is that the currency is swedish crowns (SEK) and the time is on format 0000-2400.
+The dateformat shold be 1606, i.e. 16th of June.
 
 Could you help me?
